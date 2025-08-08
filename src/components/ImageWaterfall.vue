@@ -36,7 +36,7 @@ watch(() => props.path, loadJson)
 </script>
 
 <template>
-    <Waterfall :list="list" :gutter="10" :backgroundColor="'(0,0,0,0)'">
+    <Waterfall :list="list" :gutter="10" :backgroundColor="'(0,0,0,0)'" :lazyload="true" :animationDelay="200">
         <template #item="{ item }">
             <div class="item-box">
                 <img :src="item.url" :alt="item.alt" style="width: 100%" />
