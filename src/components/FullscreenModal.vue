@@ -55,7 +55,7 @@ const activeTab = ref(props.tabs && props.tabs.length > 0 ? props.tabs[0].id : '
             <slot v-else></slot>
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer pt-4">
           <button type="button" class="btn" aria-label="Close" :data-overlay="`#${id}`">Close</button>
         </div>
       </div>
