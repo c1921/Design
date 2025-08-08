@@ -26,15 +26,14 @@ import Card from './Card.vue';
 import FullscreenModal from './FullscreenModal.vue';
 import ImageWaterfall from './ImageWaterfall.vue';
 
-interface Props {
+// 直接使用defineProps，不需要额外的变量
+const { 
+  modalId = 'fullscreen-modal', 
+  title = 'Images'
+} = defineProps<{
   modalId?: string;
   title?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  modalId: 'fullscreen-modal',
-  title: 'Images'
-});
+}>();
 
 const tabs = [
   { id: '3c', icon: 'device-laptop', title: '3C' },
