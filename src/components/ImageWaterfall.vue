@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { Waterfall } from 'vue-waterfall-plugin-next'
+import { Waterfall, LazyImg } from 'vue-waterfall-plugin-next'
 import 'vue-waterfall-plugin-next/dist/style.css'
 
 interface ImageItem {
@@ -36,10 +36,17 @@ watch(() => props.path, loadJson)
 </script>
 
 <template>
-    <Waterfall :list="list" :gutter="10" :backgroundColor="'(0,0,0,0)'" :lazyload="true" :animationDelay="200">
+    <Waterfall 
+        :list="list" 
+        :gutter="10" 
+        :backgroundColor="'(0,0,0,0)'" 
+        :lazyload="true" 
+        :animationDelay="200" 
+        imgSelector="url"
+        :crossOrigin="false">
         <template #item="{ item }">
             <div class="item-box">
-                <img :src="item.url" :alt="item.alt" style="width: 100%" />
+                <LazyImg :url="item.url" :alt="item.alt" />
             </div>
         </template>
     </Waterfall>

@@ -9,4 +9,10 @@ export default defineConfig({
     vue(),
     tailwindcss(),
   ],
+  server: {
+    cors: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    }
+  }
 })
