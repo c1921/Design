@@ -11,7 +11,11 @@
       <video 
         ref="videoRef"
         class="parallax-icon"
-        muted playsinline>
+        muted 
+        playsinline
+        disablePictureInPicture
+        disableRemotePlayback
+        webkit-playsinline>
         <source src="../assets/cube.webm" type="video/webm">
       </video>
     </div>
