@@ -4,17 +4,14 @@
 
     <FullscreenModal :id="modalId" :tabs="tabs">
       <template #tabs="{ activeTab }">
-        <div :id="`tabs-${tabs[0].id}`" role="tabpanel" :aria-labelledby="`tabs-item-${tabs[0].id}`"
-          :class="{ 'hidden': activeTab !== tabs[0].id }">
-          <ImageWaterfall path="/3c-images.json" />
-        </div>
-        <div :id="`tabs-${tabs[1].id}`" role="tabpanel" :aria-labelledby="`tabs-item-${tabs[1].id}`"
-          :class="{ 'hidden': activeTab !== tabs[1].id }">
-          <ImageWaterfall path="/indoor-images.json" />
-        </div>
-        <div :id="`tabs-${tabs[2].id}`" role="tabpanel" :aria-labelledby="`tabs-item-${tabs[2].id}`"
-          :class="{ 'hidden': activeTab !== tabs[2].id }">
-          <ImageWaterfall path="/other-images.json" />
+        <div
+          v-for="tab in tabs"
+          :key="tab.id"
+          :id="`tabs-${tab.id}`"
+          role="tabpanel"
+          :aria-labelledby="`tabs-item-${tab.id}`"
+          :class="{ 'hidden': activeTab !== tab.id }">
+          <ImageWaterfall :path="tab.path" />
         </div>
       </template>
     </FullscreenModal>
@@ -25,19 +22,24 @@
 import Card from './Card.vue';
 import FullscreenModal from './FullscreenModal.vue';
 import ImageWaterfall from './ImageWaterfall.vue';
+import type { GalleryTabItem } from '../types/global';
 
-// 直接使用defineProps，不需要额外的变量
-const { 
-  modalId = 'fullscreen-modal', 
-  title = 'Images'
-} = defineProps<{
+interface ImageGalleryProps {
   modalId?: string;
   title?: string;
-}>();
+  tabs?: GalleryTabItem[];
+}
 
-const tabs = [
-  { id: '3c', icon: 'device-laptop', title: '3C' },
-  { id: 'indoor', icon: 'home', title: '室内' },
-  { id: 'others', icon: 'dots', title: '其他' }
-];
-</script> 
+const props = withDefaults(defineProps<ImageGalleryProps>(), {
+  modalId: 'fullscreen-modal',
+  title: 'Images',
+  tabs: () => [
+    { id: '3c', icon: 'device-laptop', title: '3C', path: '/3c-images.json' },
+    { id: 'indoor', icon: 'home', title: '室内', path: '/indoor-images.json' },
+    { id: 'others', icon: 'dots', title: '其他', path: '/other-images.json' }
+  ]
+});
+
+// 解构 props
+const { modalId, title, tabs } = props;
+</script>

@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
+import type { TabItem } from '../types/global'
 
-interface TabItem {
-  id: string
-  icon: string
-  title: string
-}
-
-const props = defineProps<{
+// 泛型接口，允许接受任何扩展了 TabItem 的类型
+interface FullscreenModalProps<T extends TabItem = TabItem> {
   id: string
   title?: string
-  tabs?: TabItem[]
-}>()
+  tabs?: T[]
+}
+
+const props = defineProps<FullscreenModalProps>()
 
 const activeTab = ref(props.tabs && props.tabs.length > 0 ? props.tabs[0].id : '')
 </script>
