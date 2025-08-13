@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import CardGradientBackground from './CardGradientBackground.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 defineProps<{
   title?: string;
@@ -47,6 +47,8 @@ const videoRef = ref<HTMLVideoElement | null>(null);
 const isVideoLoaded = ref(false);
 // 视频是否已经开始播放过
 const hasStartedPlaying = ref(false);
+// 存储事件监听器引用
+let loadedDataHandler: (() => void) | null = null;
 
 // 处理鼠标悬浮事件
 const handleMouseEnter = () => {
@@ -71,16 +73,29 @@ const handleVideoEnded = () => {
 
 onMounted(() => {
   if (videoRef.value) {
-    // 监听视频加载完成事件
-    videoRef.value.addEventListener('loadeddata', () => {
+    // 创建事件监听器函数
+    loadedDataHandler = () => {
       isVideoLoaded.value = true;
       // 初始化时暂停在第一帧
       videoRef.value!.currentTime = 0;
       videoRef.value!.pause();
-    });
+    };
+    
+    // 监听视频加载完成事件
+    videoRef.value.addEventListener('loadeddata', loadedDataHandler);
     
     // 监听视频播放结束事件
     videoRef.value.addEventListener('ended', handleVideoEnded);
+  }
+});
+
+// 清理事件监听器，防止内存泄漏
+onUnmounted(() => {
+  if (videoRef.value) {
+    if (loadedDataHandler) {
+      videoRef.value.removeEventListener('loadeddata', loadedDataHandler);
+    }
+    videoRef.value.removeEventListener('ended', handleVideoEnded);
   }
 });
 </script>
